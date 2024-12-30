@@ -9,6 +9,6 @@ RUN mvn -f /home/app/pom.xml clean package
 FROM openjdk:17
 VOLUME /tmp
 EXPOSE 8080
-COPY --from=build /home/app/target/*.jar sp-backend.jar
+COPY --from=build /home/app/target/*.jar notion-secret.jar
 
-ENTRYPOINT ["sh", "-c", "java", "-jar","/sp-backend.jar" ]
+ENTRYPOINT ["sh", "-c", "java", "-jar","/notion-secret.jar" ]
