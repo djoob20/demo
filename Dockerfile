@@ -1,14 +1,10 @@
-FROM maven:3.8.6-openjdk-18-slim AS build
+FROM maven:3.8.5-openjdk-17 AS build
+COPY . .
+RUN mvn clean package -DskipTests
 
-LABEL maintainer="jahdevop@gmail.com"
+FROM openjdk:17.0.1-jdk-slim
 
-WORKDIR /home/app
-COPY . /home/app
-RUN mvn -f /home/app/pom.xml clean package
-
-FROM openjdk:17
-VOLUME /tmp
+COPY --from=build /target/notion-secret.jar notion-secret.jar
 EXPOSE 8080
-COPY --from=build /home/app/target/*.jar notion-secret.jar
 
-ENTRYPOINT ["sh", "-c", "java", "-jar","/notion-secret.jar" ]
+ENTRYPOINT ["java", "-jar","/notion-secret.jar" ]
